@@ -1,0 +1,126 @@
+
+<html>
+<head>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <title>track client</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArZP2nA42NdSElUklN6EnlnicDYLpZ5PE&signed_in=true"></script>
+    <script>
+// In this example, we center the map, and add a marker, using a LatLng object
+// literal instead of a google.maps.LatLng object. LatLng object literals are
+// a convenient way to add a LatLng coordinate and, in most cases, can be used
+// in place of a google.maps.LatLng object.
+
+var map;
+//        var shape = {
+//    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+//    type: 'poly'
+//  };
+        var image = {
+        url : "ic_bus.svg",
+        size : new google.maps.Size(20,32),
+        origin : new google.maps.Point(0,0)
+        
+        
+    }
+function initialize() {
+  var mapOptions = {
+    zoom: 8,
+    center: {lat: 28.5124117, lng: 77.3895917}
+  };
+  map = new google.maps.Map(document.getElementById('map'),
+      mapOptions);
+
+  var marker = new google.maps.Marker({
+    // The below line is equivalent to writing:
+    // position: new google.maps.LatLng(-34.397, 150.644)
+    position: {lat: -34.397, lng: 150.644},
+    map: map,
+      icon:image
+//      shape:shape
+  });
+
+  // You can use a LatLng literal in place of a google.maps.LatLng object when
+  // creating the Marker object. Once the Marker object is instantiated, its
+  // position will be available as a google.maps.LatLng object. In this case,
+  // we retrieve the marker's position using the
+  // google.maps.LatLng.getPosition() method.
+  var infowindow = new google.maps.InfoWindow({
+    content: '<p>Marker Location:' + marker.getPosition() + '</p>'
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map, marker);
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+</head>
+<body>
+    
+    <div id="map">
+        
+        
+    </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var image = {
+        url : "ic_bus.svg",
+        size : new google.maps.Size(20,32),
+        origin : new google.maps.Point(0,0)
+        
+        
+    }
+    var socket = io("106.185.36.84:6100");
+    var infowindow = undefined;
+     var marker = undefined;
+    
+    socket.emit("user_connect",{vehicle_no : "IPGS-Noida-V12"});
+    socket.on("get_client_current_position",function(data){
+        console.log("data" + JSON.stringify(data))
+            marker =  new google.maps.Marker({
+            position: {lat: Number(data.latitude), lng:Number(data.longitude) },
+            map: map,
+            icon:image
+            
+            });
+            marker.speed = data.speed
+            setLocation(marker);       
+            infowindow = new google.maps.InfoWindow({
+            content: '<p>Speed:' + data.speed + '</p>'
+            });
+    })
+    var markerNew = undefined;
+    function setLocation(marker){
+        if(markerNew != undefined){
+            if(marker.speed > 0){
+            new google.maps.Polyline({
+            path: [{lat:markerNew.position.lat(),lng:markerNew.position.lng()},{lat:marker.position.lat(),lng:marker.position.lng()}],
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+            });
+            }
+            markerNew.setMap(null);
+        }
+        
+        console.log("removed !!! ")
+        marker.setMap(map);
+        markerNew = marker;
+}
+
+</script>
+</body>
+</html>
