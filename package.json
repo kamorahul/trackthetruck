@@ -8,5 +8,21 @@
   "dependencies": {
     "express": "~4.13.1",
     "path": "~0.12.7"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kamorahul/trackthetruck.git"
+  },
+  "keywords": [
+    "[track"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamorahul/trackthetruck/issues"
+  },
+  "homepage": "https://github.com/kamorahul/trackthetruck#readme",
+  "description": ""
 }
