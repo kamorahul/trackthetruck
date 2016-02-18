@@ -86,7 +86,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
     var infowindow = undefined;
      var marker = undefined;
     
-    socket.emit("user_connect",{vehicle_no : "IPGS-Noida-V12"});
+    socket.emit("user_connect",{vehicle_no : "Tempo Traveller - DL-1VC-2000"});
+//    socket.emit("user_connect",{vehicle_no : "IPGS-Noida-V12"});
+//    socket.emit("user_connect",{vehicle_no : "TESTGPS101"});
     socket.on("get_client_current_position",function(data){
         console.log("data" + JSON.stringify(data))
             marker =  new google.maps.Marker({

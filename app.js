@@ -13,3 +13,5 @@ app.all('/',function(req,res){
 
 
 module.exports = app;
+
+//http.listen(3000)
