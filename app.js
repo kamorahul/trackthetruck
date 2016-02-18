@@ -12,4 +12,4 @@ app.all('/',function(req,res){
 })
 
 
-http.listen(3000)
+module.exports = app;
